@@ -21,11 +21,9 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    self.timer = [YMGCDTimer timerWithTimeInterval:1 repeats:YES runInMainQueue:NO block:^{
+    self.timer = [YMGCDTimer timerWithTimeInterval:2 repeats:YES block:^{
         NSLog(@"123");
-        [self.timer invalidate];
     }];
 }
-
 
 @end
