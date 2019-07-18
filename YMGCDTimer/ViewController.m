@@ -7,8 +7,11 @@
 //
 
 #import "ViewController.h"
+#import "YMGCDTimer/YMGCDTimer.h"
 
 @interface ViewController ()
+
+@property (nonatomic, strong) YMGCDTimer *timer;
 
 @end
 
@@ -17,6 +20,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
+    self.timer = [YMGCDTimer timerWithTimeInterval:1 repeats:YES runInMainQueue:NO block:^{
+        NSLog(@"123");
+        [self.timer invalidate];
+    }];
 }
 
 

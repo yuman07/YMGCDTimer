@@ -13,6 +13,7 @@
 		88BF3F5922E0670D007BD820 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 88BF3F5822E0670D007BD820 /* Assets.xcassets */; };
 		88BF3F5C22E0670D007BD820 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 88BF3F5A22E0670D007BD820 /* LaunchScreen.storyboard */; };
 		88BF3F5F22E0670D007BD820 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 88BF3F5E22E0670D007BD820 /* main.m */; };
+		88BF3F6822E06773007BD820 /* YMGCDTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 88BF3F6622E06773007BD820 /* YMGCDTimer.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,8 @@
 		88BF3F5B22E0670D007BD820 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		88BF3F5D22E0670D007BD820 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		88BF3F5E22E0670D007BD820 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		88BF3F6622E06773007BD820 /* YMGCDTimer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YMGCDTimer.m; sourceTree = "<group>"; };
+		88BF3F6722E06773007BD820 /* YMGCDTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YMGCDTimer.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +61,7 @@
 		88BF3F4E22E0670C007BD820 /* YMGCDTimer */ = {
 			isa = PBXGroup;
 			children = (
+				88BF3F6522E06743007BD820 /* YMGCDTimer */,
 				88BF3F4F22E0670C007BD820 /* AppDelegate.h */,
 				88BF3F5022E0670C007BD820 /* AppDelegate.m */,
 				88BF3F5222E0670C007BD820 /* ViewController.h */,
@@ -67,6 +71,15 @@
 				88BF3F5A22E0670D007BD820 /* LaunchScreen.storyboard */,
 				88BF3F5D22E0670D007BD820 /* Info.plist */,
 				88BF3F5E22E0670D007BD820 /* main.m */,
+			);
+			path = YMGCDTimer;
+			sourceTree = "<group>";
+		};
+		88BF3F6522E06743007BD820 /* YMGCDTimer */ = {
+			isa = PBXGroup;
+			children = (
+				88BF3F6722E06773007BD820 /* YMGCDTimer.h */,
+				88BF3F6622E06773007BD820 /* YMGCDTimer.m */,
 			);
 			path = YMGCDTimer;
 			sourceTree = "<group>";
@@ -141,6 +154,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				88BF3F6822E06773007BD820 /* YMGCDTimer.m in Sources */,
 				88BF3F5422E0670C007BD820 /* ViewController.m in Sources */,
 				88BF3F5F22E0670D007BD820 /* main.m in Sources */,
 				88BF3F5122E0670C007BD820 /* AppDelegate.m in Sources */,
