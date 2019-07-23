@@ -16,9 +16,9 @@
 
 @implementation YMGCDTimer
 
-+ (YMGCDTimer *)timerWithTimeInterval:(NSTimeInterval)interval repeats:(BOOL)repeats block:(dispatch_block_t)block
++ (YMGCDTimer *)scheduledTimerWithTimeInterval:(NSTimeInterval)interval repeats:(BOOL)repeats block:(dispatch_block_t)block
 {
-    if (isnan(interval) || isinf(interval) || interval < 0 || !block) {
+    if (isnan(interval) || isinf(interval) || interval <= 0 || !block) {
         return nil;
     }
     return [[YMGCDTimer alloc] initWithTimeInterval:interval repeats:repeats block:block];
@@ -28,12 +28,14 @@
 {
     self = [super init];
     if (self) {
-        dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-        _timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue);
+        _timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0));
         dispatch_source_set_timer(_timer, dispatch_time(DISPATCH_TIME_NOW, interval * NSEC_PER_SEC), interval * NSEC_PER_SEC, 0);
         __weak typeof(self) weakSelf = self;
         dispatch_source_set_event_handler(_timer, ^{
             __strong typeof(weakSelf) strongSelf = weakSelf;
+            if (!strongSelf) {
+                return;
+            }
             if (block) {
                 block();
             }
