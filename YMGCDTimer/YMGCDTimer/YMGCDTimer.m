@@ -18,7 +18,7 @@
 
 + (YMGCDTimer *)scheduledTimerWithTimeInterval:(NSTimeInterval)interval repeats:(BOOL)repeats block:(dispatch_block_t)block
 {
-    if (!isnormal(interval) || interval <= 0 || !block) {
+    if (!isnormal(interval) || interval < 0 || !block) {
         return nil;
     }
     return [[YMGCDTimer alloc] initWithTimeInterval:interval repeats:repeats block:block];
