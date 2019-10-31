@@ -11,12 +11,13 @@
 @interface YMGCDTimer ()
 
 @property (nonatomic, strong) dispatch_source_t timer;
+@property (nonatomic, assign) NSUInteger count;
 
 @end
 
 @implementation YMGCDTimer
 
-+ (YMGCDTimer *)scheduledTimerWithTimeInterval:(NSTimeInterval)interval repeats:(BOOL)repeats block:(dispatch_block_t)block
++ (YMGCDTimer *)scheduledTimerWithTimeInterval:(NSTimeInterval)interval repeats:(BOOL)repeats block:(void(^)(NSUInteger count))block
 {
     if (isnan(interval) || isinf(interval) || interval < 0 || !block) {
         return nil;
@@ -24,7 +25,7 @@
     return [[YMGCDTimer alloc] initWithTimeInterval:interval repeats:repeats block:block];
 }
 
-- (instancetype)initWithTimeInterval:(NSTimeInterval)interval repeats:(BOOL)repeats block:(dispatch_block_t)block
+- (instancetype)initWithTimeInterval:(NSTimeInterval)interval repeats:(BOOL)repeats block:(void(^)(NSUInteger count))block
 {
     self = [super init];
     if (self) {
@@ -37,7 +38,7 @@
                 return;
             }
             if (block) {
-                block();
+                block(strongSelf->_count++);
             }
             if (!repeats) {
                 dispatch_source_cancel(strongSelf.timer);
