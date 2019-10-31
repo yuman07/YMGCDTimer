@@ -1,8 +1,8 @@
 //
 //  YMGCDTimer.m
-//  emptyPro
+//  
 //
-//  Created by yuman01 on 2019/7/18.
+//  Created by yuman on 2019/7/18.
 //  Copyright © 2019 yuman. All rights reserved.
 //
 
@@ -18,7 +18,7 @@
 
 + (YMGCDTimer *)scheduledTimerWithTimeInterval:(NSTimeInterval)interval repeats:(BOOL)repeats block:(dispatch_block_t)block
 {
-    if (!isnormal(interval) || interval < 0 || !block) {
+    if (isnan(interval) || isinf(interval) || interval < 0 || !block) {
         return nil;
     }
     return [[YMGCDTimer alloc] initWithTimeInterval:interval repeats:repeats block:block];
@@ -28,7 +28,7 @@
 {
     self = [super init];
     if (self) {
-        _timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0));
+        _timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_get_main_queue());
         dispatch_source_set_timer(_timer, dispatch_time(DISPATCH_TIME_NOW, interval * NSEC_PER_SEC), interval * NSEC_PER_SEC, 0);
         __weak typeof(self) weakSelf = self;
         dispatch_source_set_event_handler(_timer, ^{
