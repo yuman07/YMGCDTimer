@@ -72,8 +72,6 @@ typedef NS_ENUM(NSInteger, YMGCDTimerState) {
         dispatch_source_set_timer(_timer, dispatch_time(DISPATCH_TIME_NOW, _interval * NSEC_PER_SEC), _interval * NSEC_PER_SEC, 0);
         dispatch_resume(_timer);
         self.state = YMGCDTimerStateRunning;
-        [self.lock unlock];
-        return;
     }
     
     if (self.state == YMGCDTimerStatePause) {
