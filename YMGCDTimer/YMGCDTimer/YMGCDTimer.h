@@ -35,12 +35,4 @@
 /// 被停止的计时器无法恢复，调用start方法将无效
 - (void)stop;
 
-/// 根据当前计时器是否正在计时，自动调用start/pause
-/// 如果当前正在计时，则此方法相当于pause
-/// 如果当前没有计时，则此方法相当于start
-- (void)autoStartOrPause;
-
-/// 返回该计时器是否处于计时中。
-- (BOOL)isRunning;
-
 @end
