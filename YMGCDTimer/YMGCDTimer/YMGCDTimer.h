@@ -14,10 +14,11 @@
  生成一个YMGCDTimer
  该timer需要手动启动
  该timer释放时自动停止
+ 该timer支持多线程操作
 
  @param interval 触发间隔时间，单位是秒
  @param repeats 是否重复触发
- @param block 触发时执行的操作；count为第几次触发(从0计数)；该block一定在「主线程」执行；注意该block中的self也需使用weak/strong来避免循环引用
+ @param block 触发时执行的操作；count为第几次触发(从0计数)；该block一定在「主线程」执行
  @return 如果创建成功，则返回一个YMGCDTimer，否则返回nil
  */
 + (YMGCDTimer *)timerWithTimeInterval:(NSTimeInterval)interval repeats:(BOOL)repeats block:(void(^)(NSUInteger count))block;
@@ -32,7 +33,7 @@
 
 /// 停止计时器
 /// 计时器被释放时会自动停止，亦可手动调用此方法停止
-/// 被停止的计时器无法恢复，调用start方法将无效
+/// 被停止的计时器无法恢复，调用start/pause方法将无效
 - (void)stop;
 
 @end

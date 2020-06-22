@@ -44,15 +44,15 @@ typedef NS_ENUM(NSInteger, YMGCDTimerState) {
         _timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_get_main_queue());
         __weak typeof(self) weakSelf = self;
         dispatch_source_set_event_handler(_timer, ^{
-            __strong typeof(weakSelf) strongSelf = weakSelf;
-            if (!strongSelf) {
+            __strong typeof(self) self = weakSelf;
+            if (!self) {
                 return;
             }
             if (!repeats) {
-                [strongSelf stop];
+                [self stop];
             }
             if (block) {
-                block(strongSelf->_count++);
+                block(self->_count++);
             }
         });
     }
