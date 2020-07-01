@@ -21,6 +21,7 @@ typedef NS_ENUM(NSInteger, YMGCDTimerState) {
 @property (nonatomic, assign) NSTimeInterval interval;
 @property (nonatomic, assign) NSUInteger count;
 @property (nonatomic, assign) YMGCDTimerState state;
+@property (nonatomic, assign) NSUInteger fixAccuracyNum;
 @property (nonatomic, strong) NSLock *lock;
 
 @end
@@ -29,7 +30,7 @@ typedef NS_ENUM(NSInteger, YMGCDTimerState) {
 
 + (YMGCDTimer *)timerWithTimeInterval:(NSTimeInterval)interval repeats:(BOOL)repeats block:(void(^)(NSUInteger count))block
 {
-    if (isnan(interval) || isinf(interval) || interval < 0 || !block) {
+    if (isnan(interval) || isinf(interval) || interval <= 0 || !block) {
         return nil;
     }
     return [[YMGCDTimer alloc] initWithTimeInterval:interval repeats:repeats block:block];
@@ -39,21 +40,29 @@ typedef NS_ENUM(NSInteger, YMGCDTimerState) {
 {
     self = [super init];
     if (self) {
-        _interval = interval;
+        _fixAccuracyNum = ceil(interval) * 100;
+        _interval = interval / _fixAccuracyNum;
         _lock = [[NSLock alloc] init];
-        _timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_get_main_queue());
-        __weak typeof(self) weakSelf = self;
+        dispatch_queue_t queue = dispatch_queue_create([[NSString stringWithFormat:@"com.YMGCDTimer.%p", self] UTF8String], DISPATCH_QUEUE_SERIAL);
+        _timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue);
+        __weak __typeof__(self) weakSelf = self;
         dispatch_source_set_event_handler(_timer, ^{
-            __strong typeof(self) self = weakSelf;
+            __strong __typeof__(self) self = weakSelf;
             if (!self) {
+                return;
+            }
+            if (++self->_count % self->_fixAccuracyNum != 0) {
                 return;
             }
             if (!repeats) {
                 [self stop];
             }
-            if (block) {
-                block(self->_count++);
-            }
+            NSUInteger count = self->_count / self->_fixAccuracyNum - 1;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (block) {
+                    block(count);
+                }
+            });
         });
     }
     return self;
