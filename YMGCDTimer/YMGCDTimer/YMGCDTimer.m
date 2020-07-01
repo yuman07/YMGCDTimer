@@ -40,7 +40,7 @@ typedef NS_ENUM(NSInteger, YMGCDTimerState) {
 {
     self = [super init];
     if (self) {
-        _fixAccuracyNum = ceil(interval) * 100;
+        _fixAccuracyNum = ceil(interval * 100.0);
         _interval = interval / _fixAccuracyNum;
         _lock = [[NSLock alloc] init];
         dispatch_queue_t queue = dispatch_queue_create([[NSString stringWithFormat:@"com.YMGCDTimer.%p", self] UTF8String], DISPATCH_QUEUE_SERIAL);
