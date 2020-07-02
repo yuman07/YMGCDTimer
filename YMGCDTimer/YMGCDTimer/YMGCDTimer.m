@@ -21,7 +21,6 @@ typedef NS_ENUM(NSInteger, YMGCDTimerState) {
 @property (nonatomic, assign) NSTimeInterval interval;
 @property (nonatomic, assign) NSUInteger count;
 @property (nonatomic, assign) YMGCDTimerState state;
-@property (nonatomic, assign) NSUInteger fixAccuracyNum;
 @property (nonatomic, strong) NSLock *lock;
 
 @end
@@ -40,29 +39,40 @@ typedef NS_ENUM(NSInteger, YMGCDTimerState) {
 {
     self = [super init];
     if (self) {
-        _fixAccuracyNum = ceil(interval * 100.0);
-        _interval = interval / _fixAccuracyNum;
         _lock = [[NSLock alloc] init];
-        dispatch_queue_t queue = dispatch_queue_create([[NSString stringWithFormat:@"com.YMGCDTimer.%p", self] UTF8String], DISPATCH_QUEUE_SERIAL);
-        _timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue);
+        NSUInteger times = ceil(interval * 10);
+        _interval = interval / times;
+        _timer = nil;
+        if (times == 1) {
+            _timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_get_main_queue());
+        } else {
+            const char *label = [[NSString stringWithFormat:@"com.YMGCDTimer.%p", self] UTF8String];
+            _timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_queue_create(label, DISPATCH_QUEUE_SERIAL));
+        }
         __weak __typeof__(self) weakSelf = self;
         dispatch_source_set_event_handler(_timer, ^{
             __strong __typeof__(self) self = weakSelf;
             if (!self) {
                 return;
             }
-            if (++self->_count % self->_fixAccuracyNum != 0) {
+            if (++self->_count % times != 0) {
                 return;
             }
             if (!repeats) {
                 [self stop];
             }
-            NSUInteger count = self->_count / self->_fixAccuracyNum - 1;
-            dispatch_async(dispatch_get_main_queue(), ^{
+            NSUInteger count = self->_count / times - 1;
+            if (times == 1) {
                 if (block) {
                     block(count);
                 }
-            });
+            } else {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if (block) {
+                        block(count);
+                    }
+                });
+            }
         });
     }
     return self;

@@ -21,22 +21,18 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    self.timer = [YMGCDTimer timerWithTimeInterval:1 repeats:YES block:^(NSUInteger count) {
-        NSLog(@"yuman : %@", @(count));
+    self.timer = [YMGCDTimer timerWithTimeInterval:5 repeats:YES block:^(NSUInteger count) {
+        NSLog(@"yuman : %@ : %@", @(count), @([[NSDate date] timeIntervalSince1970]));
     }];
     
     [self.timer start];
     
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(6.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self.timer pause];
-    });
-    
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(4.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self.timer start];
-    });
-
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(8.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        self.timer = nil;
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(12.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self.timer start];
+        });
     });
 }
 
