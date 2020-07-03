@@ -40,7 +40,7 @@ typedef NS_ENUM(NSInteger, YMGCDTimerState) {
     self = [super init];
     if (self) {
         _lock = [[NSLock alloc] init];
-        NSUInteger times = ceil(interval * 10);
+        NSUInteger times = ceil(interval);
         _interval = interval / times;
         dispatch_queue_t queue = nil;
         if (times == 1) {
@@ -86,6 +86,10 @@ typedef NS_ENUM(NSInteger, YMGCDTimerState) {
 
 - (void)start
 {
+    if (self.state == YMGCDTimerStateStop) {
+        return;
+    }
+    
     [self.lock lock];
     
     if (self.state == YMGCDTimerStateInit) {
@@ -104,6 +108,10 @@ typedef NS_ENUM(NSInteger, YMGCDTimerState) {
 
 - (void)pause
 {
+    if (self.state == YMGCDTimerStateStop) {
+        return;
+    }
+    
     [self.lock lock];
     
     if (self.state == YMGCDTimerStateRunning) {
@@ -116,6 +124,10 @@ typedef NS_ENUM(NSInteger, YMGCDTimerState) {
 
 - (void)stop
 {
+    if (self.state == YMGCDTimerStateStop) {
+        return;
+    }
+    
     [self.lock lock];
     
     if (self.state != YMGCDTimerStateStop) {
