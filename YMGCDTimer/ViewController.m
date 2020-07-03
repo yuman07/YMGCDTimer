@@ -28,10 +28,10 @@
     
     [self.timer start];
     
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(9.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(8.7 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self.timer pause];
         
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(8 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [self.timer start];
         });
     });
