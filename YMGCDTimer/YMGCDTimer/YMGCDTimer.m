@@ -39,10 +39,10 @@ typedef NS_ENUM(NSInteger, YMGCDTimerState) {
 {
     self = [super init];
     if (self) {
-        _lock = [[NSLock alloc] init];
-        NSUInteger times = ceil(interval);
-        _interval = interval / times;
+        NSUInteger times = ceil(interval * 10.0);
         dispatch_queue_t queue = nil;
+        _lock = [[NSLock alloc] init];
+        _interval = interval / times;
         if (times == 1) {
             queue = dispatch_get_main_queue();
         } else {

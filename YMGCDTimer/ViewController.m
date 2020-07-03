@@ -8,6 +8,7 @@
 
 #import "ViewController.h"
 #import "YMGCDTimer/YMGCDTimer.h"
+#import <AVKit/AVKit.h>
 
 @interface ViewController ()
 
@@ -21,16 +22,16 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    self.timer = [YMGCDTimer timerWithTimeInterval:10 repeats:YES block:^(NSUInteger count) {
-        NSLog(@"yuman : %@ : %@", @(count), @([[NSDate date] timeIntervalSince1970]));
+    self.timer = [YMGCDTimer timerWithTimeInterval:5 repeats:YES block:^(NSUInteger count) {
+        NSLog(@"yuman : %@ : %@", @(count), @(CACurrentMediaTime()));
     }];
     
     [self.timer start];
     
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(12 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(9.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self.timer pause];
         
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(15 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [self.timer start];
         });
     });
