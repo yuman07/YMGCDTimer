@@ -86,60 +86,60 @@ typedef NS_ENUM(NSInteger, YMGCDTimerState) {
 
 - (void)start
 {
-    if (self.state == YMGCDTimerStateStop) {
+    if (_state == YMGCDTimerStateStop) {
         return;
     }
     
-    [self.lock lock];
+    [_lock lock];
     
-    if (self.state == YMGCDTimerStateInit) {
+    if (_state == YMGCDTimerStateInit) {
         dispatch_source_set_timer(_timer, dispatch_time(DISPATCH_TIME_NOW, _interval * NSEC_PER_SEC), _interval * NSEC_PER_SEC, 0);
         dispatch_resume(_timer);
-        self.state = YMGCDTimerStateRunning;
+        _state = YMGCDTimerStateRunning;
     }
     
-    if (self.state == YMGCDTimerStatePause) {
+    if (_state == YMGCDTimerStatePause) {
         dispatch_resume(_timer);
-        self.state = YMGCDTimerStateRunning;
+        _state = YMGCDTimerStateRunning;
     }
     
-    [self.lock unlock];
+    [_lock unlock];
 }
 
 - (void)pause
 {
-    if (self.state == YMGCDTimerStateStop) {
+    if (_state == YMGCDTimerStateStop) {
         return;
     }
     
-    [self.lock lock];
+    [_lock lock];
     
-    if (self.state == YMGCDTimerStateRunning) {
+    if (_state == YMGCDTimerStateRunning) {
         dispatch_suspend(_timer);
-        self.state = YMGCDTimerStatePause;
+        _state = YMGCDTimerStatePause;
     }
     
-    [self.lock unlock];
+    [_lock unlock];
 }
 
 - (void)stop
 {
-    if (self.state == YMGCDTimerStateStop) {
+    if (_state == YMGCDTimerStateStop) {
         return;
     }
     
-    [self.lock lock];
+    [_lock lock];
     
-    if (self.state != YMGCDTimerStateStop) {
-        if (self.state != YMGCDTimerStateRunning) {
+    if (_state != YMGCDTimerStateStop) {
+        if (_state != YMGCDTimerStateRunning) {
             dispatch_resume(_timer);
         }
         dispatch_source_cancel(_timer);
         _timer = nil;
-        self.state = YMGCDTimerStateStop;
+        _state = YMGCDTimerStateStop;
     }
     
-    [self.lock unlock];
+    [_lock unlock];
 }
 
 @end
